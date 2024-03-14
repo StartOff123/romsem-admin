@@ -130,7 +130,7 @@ export default function MouthlyReportPage() {
 					) : (
 						<div className="border-[1px] border-zinc-300 rounded h-[140px] flex items-center justify-center">
 							<p className="text-sm text-zinc-400">
-								Выберите период и нажмите кнопку "Сформировать отчет"
+								Выберите период и нажмите кнопку «Сформировать отчет»
 							</p>
 						</div>
 					)}

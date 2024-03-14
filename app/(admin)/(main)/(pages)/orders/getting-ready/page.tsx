@@ -29,6 +29,7 @@ export default function GettingReadyPage() {
 				<div className="grid grid-cols-2 gap-2">
 					{gettingReadyOrder.map((order) => (
 						<OrderCart
+							key={order.id}
 							item={order}
 							btnText="Отправить в доставку"
 							actionStatus="DELIVERED"

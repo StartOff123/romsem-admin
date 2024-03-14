@@ -5,7 +5,6 @@ import { db } from '@/lib/db';
 export async function POST(req: Request) {
 	try {
 		const { date } = (await req.json()) as { date: string };
-		console.log(date);
 
 		const report = await db.order.findMany({
 			where: {

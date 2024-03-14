@@ -12,8 +12,6 @@ export async function POST(req: Request) {
 		const nextMount =
 			Number(mount) < 10 ? `0${Number(mount) + 2}` : Number(mount) + 2;
 
-		console.log(mount, year)
-
 		const report = await db.order.findMany({
 			where: {
 				status: 'ISSUED',

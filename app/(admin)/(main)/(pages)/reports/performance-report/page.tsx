@@ -9,10 +9,11 @@ import toast from 'react-hot-toast';
 
 import { Button } from '@/ui/index';
 
+import { mountObj } from '@/settings/report';
+
 import { Order } from '@/types/index';
 
 import { calcTotalPrice } from '@/utils/calc-total-price';
-import { mountObj } from '@/settings/report';
 
 interface DataType {
 	key: number;
@@ -119,7 +120,7 @@ export default function PerfomanceReportPage() {
 					) : (
 						<div className="border-[1px] border-zinc-300 rounded h-[140px] flex items-center justify-center">
 							<p className="text-sm text-zinc-400">
-								Выберите период и нажмите кнопку "Сформировать отчет"
+								Выберите период и нажмите кнопку «Сформировать отчет»
 							</p>
 						</div>
 					)}

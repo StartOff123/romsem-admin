@@ -27,6 +27,7 @@ export default function NewPage() {
 				<div className="grid grid-cols-2 gap-2">
 					{newOrders.map((order) => (
 						<OrderCart
+							key={order.id}
 							item={order}
 							btnText="Отправить на готовку"
 							actionStatus="GETTINGREADY"

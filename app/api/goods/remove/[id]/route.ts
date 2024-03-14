@@ -1,4 +1,5 @@
 import { User } from '@prisma/client';
+import { Session } from 'next-auth';
 import { NextResponse } from 'next/server';
 
 import { db } from '@/lib/db';
@@ -10,7 +11,7 @@ export async function DELETE(
 	{ params }: { params: { id: string } }
 ) {
 	try {
-		const session = await getSession();
+		const session = (await getSession()) as Session;
 		if (!session?.user?.id)
 			return new NextResponse('Неавторизован', { status: 401 });
 

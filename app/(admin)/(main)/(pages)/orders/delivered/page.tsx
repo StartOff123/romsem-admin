@@ -29,6 +29,7 @@ export default function DeliveredPage() {
 				<div className="grid grid-cols-2 gap-2">
 					{deliveredOrder.map((order) => (
 						<OrderCart
+							key={order.id}
 							item={order}
 							btnText="Закрыть заказ"
 							actionStatus="ISSUED"

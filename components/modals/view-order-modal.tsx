@@ -118,7 +118,7 @@ const ViewOrderModal = () => {
 						</h1>
 						<div className="py-2 flex flex-col gap-1">
 							{orderData?.products.map((product) => (
-								<div className="flex border-[1px] border-zinc-300 rounded p-2 gap-2">
+								<div key={product.id} className="flex border-[1px] border-zinc-300 rounded p-2 gap-2">
 									<div>
 										<Image
 											loader={imageLoager}

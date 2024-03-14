@@ -1,5 +1,6 @@
 import { User, UserStatus } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import { Session } from 'next-auth';
 import { NextResponse } from 'next/server';
 
 import { db } from '@/lib/db';
@@ -9,7 +10,7 @@ import getSession from '@/utils/getSession';
 
 export async function POST(req: Request) {
 	try {
-		const session = await getSession();
+		const session = (await getSession()) as Session;
 		if (!session?.user?.id)
 			return new NextResponse('Не авторизован', { status: 401 });
 

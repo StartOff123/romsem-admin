@@ -40,8 +40,11 @@ const Table = ({
 				</thead>
 				{!isLoading && (
 					<tbody>
-						{data.map((dataItem) => (
-							<tr className="border-b-[1px] border-zinc-300 last:border-none">
+						{data.map((dataItem, i) => (
+							<tr
+								key={i}
+								className="border-b-[1px] border-zinc-300 last:border-none"
+							>
 								{columns.map((item) => (
 									<td
 										key={item.key}
@@ -60,6 +63,7 @@ const Table = ({
 					.fill(1)
 					.map((_, i) => (
 						<span
+							key={i}
 							style={{ height: skeletonHeight }}
 							className="w-full bg-zinc-200 border-b-[1px] border-white animate-pulse block"
 						></span>

@@ -55,7 +55,7 @@ const GoodsCardContext = ({ product }: { product: Product }) => {
 						children: (
 							<div>
 								<h1 className="font-bold text-lg">
-									Удалить товар '{product.title}'?
+									Удалить товар «‎{product.title}»‎?
 								</h1>
 								<p className="text-sm text-zinc-400">
 									После удаление данный товар невозможно будет восстановить.

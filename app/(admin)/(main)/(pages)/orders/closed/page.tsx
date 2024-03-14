@@ -8,9 +8,7 @@ import { useAppSelector } from '@/hooks/redux-hooks';
 
 export default function ClosedPage() {
 	const { orders, loading } = useAppSelector((state) => state.ordersSlice);
-	const closedOrder = orders?.filter(
-		(order) => order.status === 'ISSUED'
-	);
+	const closedOrder = orders?.filter((order) => order.status === 'ISSUED');
 
 	return (
 		<div className="flex flex-col gap-4">
@@ -29,6 +27,7 @@ export default function ClosedPage() {
 				<div className="grid grid-cols-2 gap-2">
 					{closedOrder.map((order) => (
 						<OrderCart
+							key={order.id}
 							item={order}
 							isClosed
 							btnText="Закрыть заказ"
