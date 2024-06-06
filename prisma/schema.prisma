@@ -1,0 +1,96 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextIndex", "fullTextSearch"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String     @id @default(uuid())
+  firstName    String
+  lastName     String
+  surname      String
+  login        String     @unique
+  passwordHash String
+  role         Role
+  status       UserStatus
+  recovery_key String     @default(uuid())
+  phone        String?
+  description  String?
+  avatar       String?
+  createdAt    DateTime   @default(now())
+  deletedAt    DateTime?
+}
+
+model Product {
+  id          String      @id @default(uuid())
+  title       String
+  description String
+  type        ProductType
+  price       Int
+  details     Json
+  compound    String[]
+  image       String
+  popularity  Int         @default(0)
+
+  orders Order[]
+}
+
+model Order {
+  id        Int          @id @default(autoincrement())
+  phone     String
+  name      String
+  email     String?
+  payment   PaymentType
+  comments  String?
+  delivery  DeliveryType
+  street    String
+  house     Int
+  apartment Int?
+  entrance  Int?
+  createdAt DateTime     @default(now())
+  status    OrderStatus
+  products  Product[]
+}
+
+enum DeliveryType {
+  BYCOURIER
+  PICKUP
+}
+
+enum PaymentType {
+  CASH
+  BYCARD
+}
+
+enum ProductType {
+  PIZZA
+  ROLS
+  SUSHI
+  WOK
+  SETS
+  BEVERAGES
+}
+
+enum OrderStatus {
+  PROCESSING
+  GETTINGREADY
+  DELIVERED
+  ISSUED
+}
+
+enum Role {
+  ADMIN
+  MENEGER
+  DIRECTOR
+  COURIER
+  COOK
+}
+
+enum UserStatus {
+  ACTIVE
+  FIRED
+}

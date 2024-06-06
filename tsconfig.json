@@ -1,0 +1,46 @@
+{
+	"compilerOptions": {
+		"lib": ["dom", "dom.iterable", "esnext"],
+		"allowJs": true,
+		"skipLibCheck": true,
+		"strict": true,
+		"noEmit": true,
+		"esModuleInterop": true,
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"resolveJsonModule": true,
+		"isolatedModules": true,
+		"jsx": "preserve",
+		"incremental": true,
+		"plugins": [
+			{
+				"name": "next"
+			}
+		],
+		"baseUrl": "./",
+		"paths": {
+			"@/components/*": ["components/*"],
+			"@/forms/*": ["components/forms/*"],
+			"@/modals/*": ["components/modals/*"],
+			"@/providers/*": ["components/providers/*"],
+			"@/ui/*": ["components/ui/*"],
+
+			"@/app/*": ["app/*"],
+			"@/hooks/*": ["hooks/*"],
+			"@/lib/*": ["lib/*"],
+			"@/redux/*": ["lib/redux/*"],
+			"@/settings/*": ["settings/*"],
+			"@/types/*": ["types/*"],
+			"@/utils/*": ["utils/*"],
+			"@/images/*": ["public/images/*"]
+		}
+	},
+	"include": [
+		"next-env.d.ts",
+		"types/**/*.ts",
+		"**/*.ts",
+		"**/*.tsx",
+		".next/types/**/*.ts"
+	],
+	"exclude": ["node_modules"]
+}
