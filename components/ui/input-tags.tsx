@@ -32,22 +32,28 @@ const InputTags = ({
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
 		const { key } = event;
 
-		const newTag = tag.trim();
-
 		if (
 			(key === ',' || key === 'Enter' || key === 'Tab') &&
-			newTag.length &&
-			!tags?.includes(newTag)
+			tag.trim().length &&
+			!tags?.includes(tag.trim())
 		) {
 			event.preventDefault();
-			setTags((prevTags) => {
-				const latestTags = [...prevTags!, newTag];
 
-				onChange?.(latestTags);
-				return latestTags;
-			});
+			tag
+				.trim()
+				.split(';')
+				.forEach((value) => {
+					const newTag = value.trim();
+
+					setTags((prevTags) => {
+						const latestTags = [...prevTags!, newTag];
+
+						onChange?.(latestTags);
+						return latestTags;
+					});
+				});
 			setTag('');
-		} else if (key === 'Backspace' && !newTag.length && tags?.length) {
+		} else if (key === 'Backspace' && !tag.trim().length && tags?.length) {
 			event.preventDefault();
 			const tagsCopy = [...tags];
 			const lastTag = tagsCopy.pop() as string;

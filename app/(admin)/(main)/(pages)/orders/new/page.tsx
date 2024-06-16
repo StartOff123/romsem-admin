@@ -1,17 +1,28 @@
 'use client';
 
+import React from 'react';
+
 import OrderCart from '@/components/order-cart';
 
 import { Empty } from '@/ui/index';
 
-import { useAppSelector } from '@/hooks/redux-hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks/redux-hooks';
+
+import { fetchOrdersWithStatus } from '@/lib/redux/slices/order-slice';
 
 export default function NewPage() {
 	document.title = 'Новые заказы | RomSem CRM';
 
+	const dispatch = useAppDispatch();
+
 	const { profile } = useAppSelector((state) => state.profileSlice);
-	const { orders, loading } = useAppSelector((state) => state.ordersSlice);
-	const newOrders = orders?.filter((order) => order.status === 'PROCESSING');
+	const { orders, ordersWithStatus, loading } = useAppSelector(
+		(state) => state.ordersSlice
+	);
+
+	React.useEffect(() => {
+		dispatch(fetchOrdersWithStatus('PROCESSING'));
+	}, [dispatch]);
 
 	return (
 		<div className="flex flex-col gap-4">
@@ -23,17 +34,18 @@ export default function NewPage() {
 			) : (
 				<div className="flex items-center gap-4 text-zinc-400 text-sm">
 					<p>Всего заказов: {orders?.length}</p>
-					<p>Из них новые: {newOrders?.length}</p>
+					<p>Из них новые: {ordersWithStatus?.length}</p>
 				</div>
 			)}
-			{newOrders?.length && loading === 'succeeded' ? (
+			{ordersWithStatus?.length && loading === 'succeeded' ? (
 				<div className="grid grid-cols-2 gap-2">
-					{newOrders.map((order) => (
+					{ordersWithStatus.map((order) => (
 						<OrderCart
 							key={order.id}
 							item={order}
 							btnText="Отправить на готовку"
 							actionStatus="GETTINGREADY"
+							currentStatus="PROCESSING"
 							isFullAccess={
 								profile?.role === 'MENEGER' || profile?.role === 'ADMIN'
 									? true
@@ -43,7 +55,7 @@ export default function NewPage() {
 					))}
 				</div>
 			) : null}
-			{!newOrders?.length && loading === 'succeeded' && (
+			{!ordersWithStatus?.length && loading === 'succeeded' && (
 				<Empty text="Нет новых заказов" />
 			)}
 			{loading === 'pending' && (

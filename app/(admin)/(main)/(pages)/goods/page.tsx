@@ -9,23 +9,30 @@ import AddProductForm from '@/forms/add-product-form';
 
 import { AddButton, Empty } from '@/ui/index';
 
-import { useAppSelector } from '@/hooks/redux-hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks/redux-hooks';
 import { useModal } from '@/hooks/use-modal-store';
+
+import { fetchAllGoods } from '@/lib/redux/slices/goods-slice';
 
 import { Product } from '@/types/index';
 
 import { numberWithSpaces } from '@/utils/number-with-spaces';
 
-
 export default function GoodsPage() {
 	document.title = 'Товары | RomSem CRM';
-	
+
 	const { onOpen, onClose } = useModal();
+	const dispatch = useAppDispatch();
 
 	const { goods, loading, isFilters } = useAppSelector(
 		(state) => state.goodsSlice
 	);
+
 	const { profile } = useAppSelector((state) => state.profileSlice);
+
+	React.useEffect(() => {
+		dispatch(fetchAllGoods());
+	}, [dispatch]);
 
 	return (
 		<div>

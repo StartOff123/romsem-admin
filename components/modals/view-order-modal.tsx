@@ -1,6 +1,6 @@
 import moment from 'moment';
 import 'moment/locale/ru';
-import Image, { ImageLoader } from 'next/image';
+import Image from 'next/image';
 import Link from 'next/link';
 import { LuPrinter } from 'react-icons/lu';
 

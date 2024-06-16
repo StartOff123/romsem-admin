@@ -1,19 +1,28 @@
 'use client';
 
+import React from 'react';
+
 import OrderCart from '@/components/order-cart';
 
 import { Empty } from '@/ui/index';
 
-import { useAppSelector } from '@/hooks/redux-hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks/redux-hooks';
+
+import { fetchOrdersWithStatus } from '@/lib/redux/slices/order-slice';
 
 export default function DeliveredPage() {
 	document.title = 'Заказы в доставке | RomSem CRM';
 
+	const dispatch = useAppDispatch();
+
 	const { profile } = useAppSelector((state) => state.profileSlice);
-	const { orders, loading } = useAppSelector((state) => state.ordersSlice);
-	const deliveredOrder = orders?.filter(
-		(order) => order.status === 'DELIVERED'
+	const { orders, ordersWithStatus, loading } = useAppSelector(
+		(state) => state.ordersSlice
 	);
+
+	React.useEffect(() => {
+		dispatch(fetchOrdersWithStatus('DELIVERED'));
+	}, [dispatch]);
 
 	return (
 		<div className="flex flex-col gap-4">
@@ -25,17 +34,18 @@ export default function DeliveredPage() {
 			) : (
 				<div className="flex items-center gap-4 text-zinc-400 text-sm">
 					<p>Всего заказов: {orders?.length}</p>
-					<p>Из них в доставке: {deliveredOrder?.length}</p>
+					<p>Из них в доставке: {ordersWithStatus?.length}</p>
 				</div>
 			)}
-			{deliveredOrder?.length && loading === 'succeeded' ? (
+			{ordersWithStatus?.length && loading === 'succeeded' ? (
 				<div className="grid grid-cols-2 gap-2">
-					{deliveredOrder.map((order) => (
+					{ordersWithStatus.map((order) => (
 						<OrderCart
 							key={order.id}
 							item={order}
 							btnText="Закрыть заказ"
 							actionStatus="ISSUED"
+							currentStatus="DELIVERED"
 							isFullAccess={
 								profile?.role === 'COURIER' || profile?.role === 'ADMIN'
 									? true
@@ -45,7 +55,7 @@ export default function DeliveredPage() {
 					))}
 				</div>
 			) : null}
-			{!deliveredOrder?.length && loading === 'succeeded' && (
+			{!ordersWithStatus?.length && loading === 'succeeded' && (
 				<Empty text="Нет заказов в доставке" />
 			)}
 			{loading === 'pending' && (

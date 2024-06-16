@@ -1,19 +1,28 @@
 'use client';
 
+import React from 'react';
+
 import OrderCart from '@/components/order-cart';
 
 import { Empty } from '@/ui/index';
 
-import { useAppSelector } from '@/hooks/redux-hooks';
+import { useAppDispatch, useAppSelector } from '@/hooks/redux-hooks';
+
+import { fetchOrdersWithStatus } from '@/lib/redux/slices/order-slice';
 
 export default function GettingReadyPage() {
 	document.title = 'Заказы на готовке | RomSem CRM';
 
+	const dispatch = useAppDispatch();
+
 	const { profile } = useAppSelector((state) => state.profileSlice);
-	const { orders, loading } = useAppSelector((state) => state.ordersSlice);
-	const gettingReadyOrder = orders?.filter(
-		(order) => order.status === 'GETTINGREADY'
+	const { orders, ordersWithStatus, loading } = useAppSelector(
+		(state) => state.ordersSlice
 	);
+
+	React.useEffect(() => {
+		dispatch(fetchOrdersWithStatus('GETTINGREADY'));
+	}, [dispatch]);
 
 	return (
 		<div className="flex flex-col gap-4">
@@ -25,17 +34,18 @@ export default function GettingReadyPage() {
 			) : (
 				<div className="flex items-center gap-4 text-zinc-400 text-sm">
 					<p>Всего заказов: {orders?.length}</p>
-					<p>Из них на готовке: {gettingReadyOrder?.length}</p>
+					<p>Из них на готовке: {ordersWithStatus?.length}</p>
 				</div>
 			)}
-			{gettingReadyOrder?.length && loading === 'succeeded' ? (
+			{ordersWithStatus?.length && loading === 'succeeded' ? (
 				<div className="grid grid-cols-2 gap-2">
-					{gettingReadyOrder.map((order) => (
+					{ordersWithStatus.map((order) => (
 						<OrderCart
 							key={order.id}
 							item={order}
 							btnText="Отправить в доставку"
 							actionStatus="DELIVERED"
+							currentStatus="GETTINGREADY"
 							isFullAccess={
 								profile?.role === 'COOK' || profile?.role === 'ADMIN'
 									? true
@@ -45,7 +55,7 @@ export default function GettingReadyPage() {
 					))}
 				</div>
 			) : null}
-			{!gettingReadyOrder?.length && loading === 'succeeded' && (
+			{!ordersWithStatus?.length && loading === 'succeeded' && (
 				<Empty text="Нет заказов на готовке" />
 			)}
 			{loading === 'pending' && (

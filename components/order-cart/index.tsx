@@ -10,7 +10,10 @@ import { Button, OrderString } from '@/ui/index';
 import { useAppDispatch } from '@/hooks/redux-hooks';
 import { useModal } from '@/hooks/use-modal-store';
 
-import { fetchSetStatus, updateOrders } from '@/lib/redux/slices/order-slice';
+import {
+	fetchOrdersWithStatus,
+	fetchSetStatus
+} from '@/lib/redux/slices/order-slice';
 
 import { Order } from '@/types/index';
 
@@ -21,6 +24,7 @@ type OrderCartProps = {
 	item: Order;
 	isClosed?: boolean;
 	actionStatus: OrderStatus;
+	currentStatus: OrderStatus;
 	btnText: string;
 	isFullAccess: boolean;
 };
@@ -29,6 +33,7 @@ const OrderCart = ({
 	item,
 	actionStatus,
 	btnText,
+	currentStatus,
 	isClosed,
 	isFullAccess
 }: OrderCartProps) => {
@@ -40,8 +45,7 @@ const OrderCart = ({
 		setIsLoading(true);
 
 		dispatch(fetchSetStatus({ id: item.id, status: actionStatus }))
-			.then((response) => {
-				dispatch(updateOrders(response.payload));
+			.then(() => {
 				switch (actionStatus) {
 					case 'GETTINGREADY':
 						toast.success('Заказ был отправлен на готовку');
@@ -55,7 +59,10 @@ const OrderCart = ({
 				}
 			})
 			.catch(() => toast.error('Неудалось обработать заказ'))
-			.finally(() => setIsLoading(false));
+			.finally(() => {
+				dispatch(fetchOrdersWithStatus(currentStatus));
+				setIsLoading(false);
+			});
 	};
 
 	return (
@@ -89,7 +96,7 @@ const OrderCart = ({
 					</span>
 				</div>
 				<div className="flex items-center justify-between">
-					{(!isClosed && isFullAccess) && (
+					{!isClosed && isFullAccess && (
 						<Button isLoading={isLoading} onClick={handleClick}>
 							{btnText}
 						</Button>

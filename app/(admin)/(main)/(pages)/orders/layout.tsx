@@ -71,7 +71,7 @@ export default function OrdersLayout({
 
 	React.useEffect(() => {
 		dispatch(fetchAllOrders());
-	}, []);
+	}, [dispatch]);
 
 	return (
 		<div>

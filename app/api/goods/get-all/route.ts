@@ -6,17 +6,7 @@ export async function GET() {
 	try {
 		const goods = await db.product.findMany();
 
-		return NextResponse.json(
-			goods.map((item) => {
-				const { details, price, ...data } = item;
-
-				return {
-					...data,
-					price: String(price),
-					details: JSON.parse(details as string)
-				};
-			})
-		);
+		return NextResponse.json(goods);
 	} catch (error) {
 		console.log('[ALL_GET]', error);
 		return new NextResponse('Внутренняя ошибка сервера', { status: 500 });

@@ -5,6 +5,21 @@ import axios from 'axios';
 
 import { Order, ReduxOrderState } from '@/types/index';
 
+export const fetchOrdersWithStatus = createAsyncThunk(
+	'orders/fetchOrdersWithStatus',
+	async (status: OrderStatus) => {
+		try {
+			const { data } = await axios.get(`/api/orders/get-with-status/${status}`);
+
+			return data;
+		} catch (error) {
+			if (axios.isAxiosError(error) && error.response) {
+				throw error.response.data;
+			}
+		}
+	}
+);
+
 export const fetchAllOrders = createAsyncThunk(
 	'orders/fetchAllOrders',
 	async () => {
@@ -38,6 +53,7 @@ export const fetchSetStatus = createAsyncThunk(
 );
 
 const initialState = {
+	ordersWithStatus: null,
 	orders: null,
 	loading: 'pending'
 } as ReduxOrderState;
@@ -45,17 +61,23 @@ const initialState = {
 export const orderSlice = createSlice({
 	name: 'orders',
 	initialState,
-	reducers: {
-		updateOrders: (state, action: PayloadAction<Order>) => {
-			if (state.orders) {
-				const arr = state.orders?.filter(
-					(item) => item.id !== action.payload.id
-				);
-				state.orders = [...arr, action.payload];
-			}
-		}
-	},
+	reducers: {},
 	extraReducers(builder) {
+		builder.addCase(fetchOrdersWithStatus.pending, (state) => {
+			state.ordersWithStatus = null;
+			state.loading = 'pending';
+		});
+		builder.addCase(
+			fetchOrdersWithStatus.fulfilled,
+			(state, action: PayloadAction<Order[]>) => {
+				state.ordersWithStatus = action.payload;
+				state.loading = 'succeeded';
+			}
+		);
+		builder.addCase(fetchOrdersWithStatus.rejected, (state) => {
+			state.ordersWithStatus = null;
+			state.loading = 'failed';
+		});
 		builder.addCase(fetchAllOrders.pending, (state) => {
 			state.loading = 'pending';
 		});
@@ -73,5 +95,4 @@ export const orderSlice = createSlice({
 	}
 });
 
-export const { updateOrders } = orderSlice.actions;
 export default orderSlice.reducer;

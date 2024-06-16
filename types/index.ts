@@ -75,6 +75,7 @@ export type Order = {
 };
 
 export type ReduxOrderState = {
+	ordersWithStatus: Order[] | null;
 	orders: Order[] | null;
 	loading: ReduxStatusLoading;
 };
