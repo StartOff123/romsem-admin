@@ -1,7 +1,10 @@
+'use client';
+
 import classNames from 'classnames';
 import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 import { FaRegUser } from 'react-icons/fa';
 import { IoSettingsOutline } from 'react-icons/io5';
@@ -25,6 +28,7 @@ interface IList {
 
 const HeaderUser = () => {
 	const { onOpen } = useModal();
+	const router = useRouter();
 	const ref = React.useRef<HTMLDivElement>(null);
 
 	const { profile } = useAppSelector((state) => state.profileSlice);
@@ -60,7 +64,12 @@ const HeaderUser = () => {
 							</div>
 						),
 						confirmBtnText: 'Выйти',
-						onConfirm: () => signOut()
+						onConfirm: () => {
+							signOut({
+								redirect: false
+							});
+							router.push('/auth');
+						}
 					}
 				}),
 			isDenger: true

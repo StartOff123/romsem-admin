@@ -122,19 +122,29 @@ const GoodsCardContext = ({ product }: { product: Product }) => {
 						: 'opacity-0 pointer-events-none'
 				)}
 			>
-				{contextMenuItems.map((item) => (
-					<div
-						key={item.key}
-						className={classNames(
-							'text-sm py-1',
-							item.access === 'full' && '!block',
-							item.access !== 'ADMIN' && 'hidden'
-						)}
-						onClick={item.onClick}
-					>
-						{item.label}
-					</div>
-				))}
+				{contextMenuItems.map((item) => {
+					if (item.access === 'full') {
+						return (
+							<div
+								key={item.key}
+								className={classNames('text-sm py-1 block')}
+								onClick={item.onClick}
+							>
+								{item.label}
+							</div>
+						);
+					} else if (item.access === profile?.role) {
+						return (
+							<div
+								key={item.key}
+								className={classNames('text-sm py-1 block')}
+								onClick={item.onClick}
+							>
+								{item.label}
+							</div>
+						);
+					} else return null;
+				})}
 			</div>
 		</div>
 	);

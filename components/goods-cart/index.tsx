@@ -40,7 +40,7 @@ const GoodsCard = ({ item }: { item: Product }) => {
 				/>
 			</div>
 			<div className="flex flex-col gap-2">
-				<h1 className="px-2 py-1 text-center bg-[#202B46] text-white bg-opacity-90 rounded text-sm">
+				<h1 className="px-2 py-1 text-center bg-[#202B46] text-white bg-opacity-90 rounded text-sm text-ellipsis text-nowrap overflow-hidden">
 					{item.title}
 				</h1>
 				<div className="flex flex-col gap-2 border-[1px] border-zinc-300 p-2 rounded">

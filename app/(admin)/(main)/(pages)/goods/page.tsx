@@ -12,7 +12,10 @@ import { AddButton, Empty } from '@/ui/index';
 import { useAppDispatch, useAppSelector } from '@/hooks/redux-hooks';
 import { useModal } from '@/hooks/use-modal-store';
 
-import { fetchAllGoods } from '@/lib/redux/slices/goods-slice';
+import {
+	fetchAllGoods,
+	fetchFiltersGoods
+} from '@/lib/redux/slices/goods-slice';
 
 import { Product } from '@/types/index';
 
@@ -31,7 +34,13 @@ export default function GoodsPage() {
 	const { profile } = useAppSelector((state) => state.profileSlice);
 
 	React.useEffect(() => {
-		dispatch(fetchAllGoods());
+		dispatch(
+			fetchFiltersGoods({
+				sort: null,
+				productType: null,
+				searchValue: ''
+			})
+		);
 	}, [dispatch]);
 
 	return (

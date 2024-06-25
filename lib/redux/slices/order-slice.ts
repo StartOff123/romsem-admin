@@ -24,7 +24,7 @@ export const fetchAllOrders = createAsyncThunk(
 	'orders/fetchAllOrders',
 	async () => {
 		try {
-			const { data } = await axios.get('/api/orders/get-all');
+			const { data } = await axios.get('/api/orders/get-all?products=true');
 
 			return data;
 		} catch (error) {

@@ -31,11 +31,7 @@ const GoodsFilters = () => {
 	}, [rootSearchValue]);
 
 	React.useEffect(() => {
-		if (!sort && !productType && searchValue === '') {
-			dispatch(fetchAllGoods());
-		} else {
-			dispatch(fetchFiltersGoods({ productType, searchValue, sort }));
-		}
+		dispatch(fetchFiltersGoods({ productType, searchValue, sort }));
 	}, [sort, productType, searchValue]);
 
 	return (
